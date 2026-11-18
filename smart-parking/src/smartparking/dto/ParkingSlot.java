@@ -14,11 +14,14 @@ public class ParkingSlot {
 
     public void assignVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
-        boolean occupied = true;
+        this.occupied = true;
+        
     }
 
     public void release() {
         this.occupied = false;
+        //vehicle is changed to null 
+        this.vehicle=null;
     }
 
     public int getSlotNumber() {

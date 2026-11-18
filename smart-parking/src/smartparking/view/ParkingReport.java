@@ -26,7 +26,7 @@ public class ParkingReport {
     }
 
     public int getAvailableSlots() {
-        return parkingLot.getTotalSlots() - service.getTicketCount();
+        return parkingLot.getTotalSlots() - getOccupiedSlots();
     }
 
     public void printStatus() {
@@ -38,7 +38,7 @@ public class ParkingReport {
                 who = slot.getVehicle().getRegistrationNumber();
             }
             String state = slot.isOccupied() ? "OCCUPIED" : "FREE";
-            System.out.println("   | Slot " + slot.getSlotNumber() + "  " + pad(state, 9) + pad(who, 12) + "        |");
+            System.out.println("   | Slot " + slot.getSlotNumber() + "  " + pad(state, 9) + pad(who, 17) + "        |");
             if (!slotList.isEmpty()) {
                 slotList = slotList + ",";
             }
@@ -46,7 +46,7 @@ public class ParkingReport {
         }
         System.out.println("   | Available: " + getAvailableSlots() + "   Occupied: " + getOccupiedSlots()
                 + "                |");
-        System.out.println("   +--------------------------------------------+");
+        System.out.println("   +-----------------------------------------------+");
     }
 
     public void printDailySummary() {

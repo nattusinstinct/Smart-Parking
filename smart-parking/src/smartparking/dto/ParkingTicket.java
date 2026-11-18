@@ -27,6 +27,7 @@ public class ParkingTicket {
     public void close(int exitTime) {
         this.exitTime = exitTime;
         this.fee = getChargeableHours() * vehicle.getHourlyRate();
+        this.closed=true;
     }
 
     public int getDurationMinutes() {

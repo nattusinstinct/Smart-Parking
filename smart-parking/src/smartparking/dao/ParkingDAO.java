@@ -11,7 +11,7 @@ import smartparking.dto.Vehicle;
 
 public class ParkingDAO {
 
-    private static final String FILE_PATH = "data/tickets.json";
+    private static final String FILE_PATH = "Github/Smart-Parking/smart-parking/src/smartparking/data/tickets.json";
 
     public ArrayList<ParkingTicket> loadTickets() {
         ArrayList<ParkingTicket> tickets = new ArrayList<>();
@@ -31,10 +31,18 @@ public class ParkingDAO {
 
     public void saveTickets(ArrayList<ParkingTicket> tickets) {
         try {
+            //the logic for getting the bracket
             FileWriter writer = new FileWriter(FILE_PATH);
+             writer.write("[");
+            int count = 0 ;
             for (ParkingTicket ticket : tickets) {
-                writer.write(toJson(ticket) + "\n");
+                writer.write(toJson(ticket));
+                if(tickets.size()-1!=count){
+                    writer.write("\n,");
+                }
+                count++;
             }
+            writer.write("]");
             writer.close();
         } catch (IOException e) {
             System.out.println("Could not save tickets: " + e.getMessage());
@@ -71,7 +79,10 @@ public class ParkingDAO {
             int end = line.indexOf('"', start + 1);
             return line.substring(start + 1, end);
         }
+        // System.out.println("start : "+ start);
+          
         int end = start;
+        // System.out.println("end : "+ end);
         while (end < line.length() && line.charAt(end) != ',' && line.charAt(end) != '}') {
             end++;
         }
