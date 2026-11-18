@@ -17,6 +17,7 @@ public class ParkingService {
         this.parkingLot = parkingLot;
         tickets.addAll(history);
         restoreOccupiedSlots();
+        restoreTicketCounter();
     }
 
     private void restoreTicketCounter() {
@@ -88,11 +89,13 @@ public class ParkingService {
 
         slot.release();
         System.out.println("   Slot " + slot.getSlotNumber() + " is now free. Goodbye " + reg + "!");
+        // changed ticket into null
         return ticket;
     }
 
     private ParkingSlot findAvailableSlot() {
-        ParkingSlot freeSlot = parkingLot.getSlots().get(0);
+        //freeslot indicts alwys the first value ;
+        ParkingSlot freeSlot = null;
         for (ParkingSlot slot : parkingLot.getSlots()) {
             if (!slot.isOccupied()) {
                 freeSlot = slot;
@@ -104,7 +107,8 @@ public class ParkingService {
 
     private ParkingTicket findActiveTicket(String registrationNumber) {
         for (ParkingTicket ticket : tickets) {
-            if (!ticket.isClosed() && ticket.getVehicle().getRegistrationNumber() == registrationNumber) {
+            //Changes into string 
+            if (!ticket.isClosed() && ticket.getVehicle().getRegistrationNumber() .equals (registrationNumber)) {
                 return ticket;
             }
         }

@@ -1,0 +1,14 @@
+[{"id":"T1001","reg":"11","type":"CAR","slot":1,"entry":1200,"exit":0,"fee":0,"closed":true}
+,{"id":"T1002","reg":"22","type":"BIKE","slot":2,"entry":1200,"exit":60,"fee":20,"closed":true}
+,{"id":"T1003","reg":"00","type":"CAR","slot":1,"entry":1103,"exit":1320,"fee":120,"closed":true}
+,{"id":"T1004","reg":"44","type":"CAR","slot":4,"entry":1900,"exit":720,"fee":40,"closed":true}
+,{"id":"T1005","reg":"VV","type":"CAR","slot":1,"entry":1200,"exit":720,"fee":40,"closed":true}
+,{"id":"T1006","reg":"456","type":"66","slot":1,"entry":540,"exit":720,"fee":0,"closed":true}
+,{"id":"T1007","reg":"WW","type":"VAR","slot":0,"entry":720,"exit":720,"fee":0,"closed":true}
+,{"id":"T1008","reg":"ASD","type":"BIKE","slot":1,"entry":180,"exit":660,"fee":160,"closed":true}
+,{"id":"T1009","reg":"VV","type":"CAR","slot":2,"entry":660,"exit":600,"fee":40,"closed":true}
+,{"id":"T1010","reg":"11","type":"BIKE","slot":1,"entry":720,"exit":0,"fee":0,"closed":false}
+,{"id":"T1011","reg":"22","type":"CAR","slot":2,"entry":60,"exit":0,"fee":0,"closed":false}
+,{"id":"T1012","reg":"QDW","type":"SDC","slot":3,"entry":660,"exit":0,"fee":0,"closed":false}
+,{"id":"T1013","reg":"ASX","type":"AX","slot":4,"entry":660,"exit":0,"fee":0,"closed":false}
+,{"id":"T1014","reg":"1","type":"1","slot":5,"entry":720,"exit":0,"fee":0,"closed":false}]
