@@ -9,113 +9,145 @@ import smartparking.view.ParkingReport;
 
 public class ParkingService {
 
-    private ParkingLot parkingLot;
-    private ArrayList<ParkingTicket> tickets = new ArrayList<>();
-    private int nextTicketNumber = 1001;
+  private ParkingLot parkingLot;
+  private ArrayList<ParkingTicket> tickets = new ArrayList<>();
+  private int nextTicketNumber = 1001;
 
-    public ParkingService(ParkingLot parkingLot, ArrayList<ParkingTicket> history) {
-        this.parkingLot = parkingLot;
-        tickets.addAll(history);
-        restoreOccupiedSlots();
+  public ParkingService(ParkingLot parkingLot, ArrayList<ParkingTicket> history) {
+    this.parkingLot = parkingLot;
+    tickets.addAll(history);
+     restoreTicketCounter(); 
+    restoreOccupiedSlots();
+  }
+
+  private void restoreTicketCounter() {
+    for (ParkingTicket ticket : tickets) {
+      int number = Integer.parseInt(ticket.getTicketId().substring(1));
+      if (number >= nextTicketNumber) {
+        nextTicketNumber = number + 1;
+      }
     }
+  }
 
-    private void restoreTicketCounter() {
-        for (ParkingTicket ticket : tickets) {
-            int number = Integer.parseInt(ticket.getTicketId().substring(1));
-            if (number >= nextTicketNumber) {
-                nextTicketNumber = number + 1;
-            }
-        }
-    }
-
-    private void restoreOccupiedSlots() {
-        for (ParkingTicket ticket : tickets) {
-            if (!ticket.isClosed()) {
-                ParkingSlot slot = parkingLot.getSlot(ticket.getSlotNumber());
-                if (slot != null) {
-                    slot.assignVehicle(ticket.getVehicle());
-                }
-            }
-        }
-    }
-
-    public ParkingTicket parkVehicle(Vehicle vehicle, int time) {
-        String reg = vehicle.getRegistrationNumber();
-        String ticketId = "T" + nextTicketNumber;
-        nextTicketNumber++;
-        System.out.println("\n>> " + vehicle + " arrives at the entrance at " + ParkingReport.formatTime(time));
-
-        if (findActiveTicket(reg) != null) {
-            System.out.println("   " + reg + " is already parked inside. Request refused.");
-            return null;
-        }
-
-        ParkingSlot slot = findAvailableSlot();
-        if (slot == null) {
-            System.out.println("   Sorry, the parking lot is FULL. " + reg + " cannot enter.");
-            return null;
-        }
-
-        slot.assignVehicle(vehicle);
-        ParkingTicket ticket = new ParkingTicket(ticketId, vehicle, slot.getSlotNumber(), time);
-        tickets.add(ticket);
-
-        System.out.println("   Slot " + slot.getSlotNumber() + " assigned. Ticket " + ticket.getTicketId() + " issued.");
-        System.out.println("   Gate opens. " + reg + " parks in Slot " + slot.getSlotNumber() + ".");
-        return ticket;
-    }
-
-    public ParkingTicket exitVehicle(String registrationNumber, int time) {
-        String reg = registrationNumber.toUpperCase();
-        System.out.println("\n<< " + reg + " requests exit at " + ParkingReport.formatTime(time));
-
-        ParkingTicket ticket = findActiveTicket(reg);
-        if (ticket == null) {
-            System.out.println("   No active ticket for " + reg + ".");
-            return null;
-        }
-
+  private void restoreOccupiedSlots() {
+    for (ParkingTicket ticket : tickets) {
+      if (!ticket.isClosed()) {
         ParkingSlot slot = parkingLot.getSlot(ticket.getSlotNumber());
-        if (slot == null) {
-            System.out.println("   Could not find Slot " + ticket.getSlotNumber() + " for " + reg + ".");
-            return null;
+        if (slot != null) {
+          slot.assignVehicle(ticket.getVehicle());
         }
+      }
+    }
+  }
 
-        ticket.close(time);
-        System.out.println("   Ticket " + ticket.getTicketId() + ": parked " + ticket.getDurationMinutes()
-                + " min, charged " + ticket.getChargeableHours() + " h x Rs." + ticket.getVehicle().getHourlyRate()
-                + " = Rs." + ticket.getFee());
+  public ParkingTicket parkVehicle(Vehicle vehicle, int time) {
+    String reg = vehicle.getRegistrationNumber();
+    String ticketId = "T" + nextTicketNumber;
+    nextTicketNumber++;
+    System.out.println(
+        "\n>> " + vehicle + " arrives at the entrance at " + ParkingReport.formatTime(time));
 
-        slot.release();
-        System.out.println("   Slot " + slot.getSlotNumber() + " is now free. Goodbye " + reg + "!");
+    if (findActiveTicket(reg) != null) {
+      System.out.println("   " + reg + " is already parked inside. Request refused.");
+      return null;
+    }
+
+    ParkingSlot slot = findAvailableSlot();
+
+    if (slot == null) {
+      System.out.println("   Sorry, the parking lot is FULL. " + reg + " cannot enter.");
+      return null;
+    }
+
+    slot.assignVehicle(vehicle);
+    ParkingTicket ticket = new ParkingTicket(ticketId, vehicle, slot.getSlotNumber(), time);
+    tickets.add(ticket);
+
+    System.out.println(
+        "   Slot "
+            + slot.getSlotNumber()
+            + " assigned. Ticket "
+            + ticket.getTicketId()
+            + " issued.");
+    System.out.println("   Gate opens. " + reg + " parks in Slot " + slot.getSlotNumber() + ".");
+    return ticket;
+  }
+
+  public ParkingTicket exitVehicle(String registrationNumber, int time) {
+   
+    String reg = registrationNumber.toUpperCase();
+    System.out.println("\n<< " + reg + " requests exit at " + ParkingReport.formatTime(time));
+
+    ParkingTicket ticket = findActiveTicket(reg);
+
+    if (ticket == null) {
+      System.out.println("   No active ticket for " + reg + ".");
+      return null;
+    }
+
+    ParkingSlot slot = parkingLot.getSlot(ticket.getSlotNumber());
+
+    if (slot == null) {
+      System.out.println("   Could not find Slot " + ticket.getSlotNumber() + " for " + reg + ".");
+      return null;
+    }
+
+    ticket.close(time);
+
+    System.out.println(
+        "   Ticket "
+            + ticket.getTicketId()
+            + ": parked "
+            + ticket.getDurationMinutes()
+            + " min, charged "
+            + ticket.getChargeableHours()
+            + " h x Rs."
+            + ticket.getVehicle().getHourlyRate()
+            + " = Rs."
+            + ticket.getFee());
+
+    slot.release();
+    System.out.println("   Slot " + slot.getSlotNumber() + " is now free. Goodbye " + reg + "!");
+   
+    return ticket;
+  }
+
+  private ParkingSlot findAvailableSlot() {
+
+    // 4 . initialised freeslot as null
+
+    ParkingSlot freeSlot = null;
+
+    System.out.println(freeSlot);
+
+    for (ParkingSlot slot : parkingLot.getSlots()) {
+      if (!slot.isOccupied()) {
+        freeSlot = slot;
+        break;
+      }
+    }
+    return freeSlot;
+  }
+
+  private ParkingTicket findActiveTicket(String registrationNumber) {
+
+    for (ParkingTicket ticket : tickets) {
+
+      // 5 . string comparison
+
+      if (!ticket.isClosed()
+          && ticket.getVehicle().getRegistrationNumber().equals(registrationNumber)) {
         return ticket;
+      }
     }
+    return null;
+  }
 
-    private ParkingSlot findAvailableSlot() {
-        ParkingSlot freeSlot = parkingLot.getSlots().get(0);
-        for (ParkingSlot slot : parkingLot.getSlots()) {
-            if (!slot.isOccupied()) {
-                freeSlot = slot;
-                break;
-            }
-        }
-        return freeSlot;
-    }
+  public int getTicketCount() {
+    return tickets.size();
+  }
 
-    private ParkingTicket findActiveTicket(String registrationNumber) {
-        for (ParkingTicket ticket : tickets) {
-            if (!ticket.isClosed() && ticket.getVehicle().getRegistrationNumber() == registrationNumber) {
-                return ticket;
-            }
-        }
-        return null;
-    }
-
-    public int getTicketCount() {
-        return tickets.size();
-    }
-
-    public ArrayList<ParkingTicket> getTickets() {
-        return tickets;
-    }
+  public ArrayList<ParkingTicket> getTickets() {
+    return tickets;
+  }
 }
