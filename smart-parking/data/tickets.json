@@ -1,0 +1,8 @@
+[{"id":"T1001","reg":"3090","type":"CAR","slot":1,"entry":900,"exit":0,"fee":40,"closed":true}
+,{"id":"T1005","reg":"2","type":"3090","slot":1,"entry":0,"exit":720,"fee":480,"closed":true}
+,{"id":"T1007","reg":"LLM","type":"00","slot":1,"entry":0,"exit":0,"fee":40,"closed":true}
+,{"id":"T1009","reg":"HELLOOOO","type":"00:00","slot":1,"entry":0,"exit":0,"fee":40,"closed":true}
+,{"id":"T1010","reg":"100'","type":"CAR","slot":5,"entry":0,"exit":0,"fee":0,"closed":false}
+,{"id":"T1011","reg":"UI","type":"CAR","slot":1,"entry":12,"exit":0,"fee":40,"closed":true}
+,{"id":"T1012","reg":"123","type":"2EE","slot":2,"entry":0,"exit":0,"fee":0,"closed":false}
+,{"id":"T1013","reg":"2","type":"CAR","slot":3,"entry":0,"exit":0,"fee":0,"closed":false}]
