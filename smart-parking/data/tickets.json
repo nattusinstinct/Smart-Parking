@@ -1,0 +1,4 @@
+[ 
+{"id":"T1001","reg":"TN 12 AS 3456","type":"BIKE","slot":1,"entry":732,"exit":345,"fee":23,"closed":false}
+,{"id":"T1002","reg":"TN 81 AZ 4567","type":"CAR","slot":2,"entry":720,"exit":720,"fee":40,"closed":true}
+]

@@ -9,16 +9,18 @@ public class ParkingSlot {
     public ParkingSlot(int slotNumber) {
         this.slotNumber = slotNumber;
         this.occupied = false;
-        this.vehicle = null;
+        //bug
     }
 
     public void assignVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
-        boolean occupied = true;
+        this.occupied = true;
     }
 
     public void release() {
         this.occupied = false;
+        //bug
+        this.vehicle = null;
     }
 
     public int getSlotNumber() {
@@ -31,5 +33,14 @@ public class ParkingSlot {
 
     public Vehicle getVehicle() {
         return vehicle;
+    }
+
+    @Override
+    public String toString() {
+        return "ParkingSlot" +
+                "slotNumber=" + slotNumber +
+                ", occupied=" + occupied +
+                ", vehicle=" + vehicle +
+                "\n";
     }
 }

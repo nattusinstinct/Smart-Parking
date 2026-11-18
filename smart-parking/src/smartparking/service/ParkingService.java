@@ -37,6 +37,8 @@ public class ParkingService {
                 }
             }
         }
+        //ticket count
+        restoreTicketCounter();
     }
 
     public ParkingTicket parkVehicle(Vehicle vehicle, int time) {
@@ -57,6 +59,8 @@ public class ParkingService {
         }
 
         slot.assignVehicle(vehicle);
+      
+ 
         ParkingTicket ticket = new ParkingTicket(ticketId, vehicle, slot.getSlotNumber(), time);
         tickets.add(ticket);
 
@@ -82,6 +86,7 @@ public class ParkingService {
         }
 
         ticket.close(time);
+
         System.out.println("   Ticket " + ticket.getTicketId() + ": parked " + ticket.getDurationMinutes()
                 + " min, charged " + ticket.getChargeableHours() + " h x Rs." + ticket.getVehicle().getHourlyRate()
                 + " = Rs." + ticket.getFee());
@@ -90,21 +95,23 @@ public class ParkingService {
         System.out.println("   Slot " + slot.getSlotNumber() + " is now free. Goodbye " + reg + "!");
         return ticket;
     }
-
+    //bug
     private ParkingSlot findAvailableSlot() {
-        ParkingSlot freeSlot = parkingLot.getSlots().get(0);
+        ParkingSlot freeSlot = null;
         for (ParkingSlot slot : parkingLot.getSlots()) {
             if (!slot.isOccupied()) {
                 freeSlot = slot;
                 break;
             }
         }
+        
         return freeSlot;
     }
 
     private ParkingTicket findActiveTicket(String registrationNumber) {
         for (ParkingTicket ticket : tickets) {
-            if (!ticket.isClosed() && ticket.getVehicle().getRegistrationNumber() == registrationNumber) {
+            //bug 8
+            if (!ticket.isClosed() && ticket.getVehicle().getRegistrationNumber().equals(registrationNumber)) {
                 return ticket;
             }
         }

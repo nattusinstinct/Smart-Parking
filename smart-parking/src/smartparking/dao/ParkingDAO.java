@@ -11,30 +11,52 @@ import smartparking.dto.Vehicle;
 
 public class ParkingDAO {
 
-    private static final String FILE_PATH = "data/tickets.json";
+    private static final String FILE_PATH = "smart-parking/data/tickets.json";
 
     public ArrayList<ParkingTicket> loadTickets() {
         ArrayList<ParkingTicket> tickets = new ArrayList<>();
+        File ticketFile = new File(FILE_PATH);
+        //bug
         try {
-            Scanner file = new Scanner(new File(FILE_PATH));
-            while (file.hasNextLine()) {
-                String line = file.nextLine().trim();
-                if (!line.isEmpty()) {
-                    tickets.add(parseTicket(line));
-                }
+            if (!ticketFile.exists()) {
+                ticketFile.createNewFile();
             }
-            file.close();
+
+            try (Scanner file = new Scanner(ticketFile)) {
+                //  file.hasNextLine();
+                while (file.hasNextLine()) {
+                    String line = file.nextLine().trim();
+                    if (!line.isEmpty()) {
+
+                        ParkingTicket ticket = parseTicket(line);
+                        if (ticket != null) {
+                            tickets.add(ticket);
+                        }
+                    }
+                }
+                //bug
+            }
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } //bug 
+        catch (Exception e) {
+            e.printStackTrace();
         }
         return tickets;
     }
 
     public void saveTickets(ArrayList<ParkingTicket> tickets) {
+        //bug 
         try {
             FileWriter writer = new FileWriter(FILE_PATH);
-            for (ParkingTicket ticket : tickets) {
-                writer.write(toJson(ticket) + "\n");
+            writer.write("[ \n");
+            for (int i = 0; i < tickets.size(); i++) {
+                writer.write(toJson(tickets.get(i)) + "\n");
+                if (i < tickets.size() - 1) {
+                    writer.write(",");
+                }
             }
+            writer.write("]");
             writer.close();
         } catch (IOException e) {
             System.out.println("Could not save tickets: " + e.getMessage());
@@ -53,6 +75,10 @@ public class ParkingDAO {
     }
 
     private ParkingTicket parseTicket(String line) {
+        if (line == null || line.trim().isEmpty() || line.equals("[") || line.equals("]")) {
+            return null;
+        }
+
         String id = jsonText(line, "id");
         String reg = jsonText(line, "reg");
         String type = jsonText(line, "type");
@@ -63,6 +89,7 @@ public class ParkingDAO {
         boolean closed = jsonText(line, "closed").equals("true");
         return new ParkingTicket(id, new Vehicle(reg, type), slot, entry, exit, fee, closed);
     }
+//bug 
 
     private String jsonText(String line, String key) {
         String marker = "\"" + key + "\":";
@@ -71,7 +98,9 @@ public class ParkingDAO {
             int end = line.indexOf('"', start + 1);
             return line.substring(start + 1, end);
         }
+        
         int end = start;
+
         while (end < line.length() && line.charAt(end) != ',' && line.charAt(end) != '}') {
             end++;
         }
