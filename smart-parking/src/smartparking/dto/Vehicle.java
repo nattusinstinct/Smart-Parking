@@ -22,7 +22,12 @@ public class Vehicle {
         if (type.equals("BIKE")) {
             return 20;
         }
+        else if (type.equals("CAR")){
         return 40;
+        }
+        else{
+            return 0;
+        }
     }
 
     public String toString() {

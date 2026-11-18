@@ -27,9 +27,10 @@ public class ParkingLot {
     }
 
     public ParkingSlot getSlot(int slotNumber) {
-        if (slotNumber < 0 || slotNumber >= slots.size()) {
+        if (slotNumber < 1 || slotNumber > slots.size()) {
             return null;
         }
-        return slots.get(slotNumber);
+        return slots.get(slotNumber - 1);
     }
+
 }
